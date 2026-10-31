@@ -1,8 +1,10 @@
 <div align="center">
 
-<img src="assets/icon.svg" width="128" height="128" alt="aisw icon">
+<img src="assets/icon.svg" width="128" height="128" alt="AI Account Switcher icon">
 
-# aisw
+# AI Account Switcher
+
+`aisw`
 
 **One command to switch accounts in your AI coding CLIs.**
 
