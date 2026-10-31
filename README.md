@@ -192,6 +192,7 @@ It does not share, proxy or pool accounts. Use each account according to its pla
 ```sh
 git clone https://github.com/yasinkuyu/ai-account-switcher && cd ai-account-switcher
 go build -o aisw ./cmd/aisw       # current platform
+go test ./...                     # tests (never touch your real logins)
 ./scripts/build.sh          # all platforms → dist/
 ```
 
