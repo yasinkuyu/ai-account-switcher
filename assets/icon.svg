@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <title>aisw</title>
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2a2d"/><stop offset="0.45" stop-color="#121214"/><stop offset="1" stop-color="#050506"/></linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.08" r="0.75"><stop offset="0" stop-color="#fff" stop-opacity="0.10"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.22"/><stop offset="0.25" stop-color="#fff" stop-opacity="0.05"/><stop offset="1" stop-color="#fff" stop-opacity="0.02"/></linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4cd964"/><stop offset="1" stop-color="#28a745"/></linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3fa2ff"/><stop offset="1" stop-color="#0a6cff"/></linearGradient>
+    <linearGradient id="knob" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e3e3e8"/></linearGradient>
+    <linearGradient id="gray" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a5a60"/><stop offset="1" stop-color="#3a3a3f"/></linearGradient>
+    <!-- metal: light from the top right, falling to near-black at the bottom left -->
+    <linearGradient id="metalSweep" gradientUnits="userSpaceOnUse" x1="800" y1="220" x2="230" y2="800">
+      <stop offset="0" stop-color="#f7f7f9"/>
+      <stop offset="0.45" stop-color="#afafb5"/>
+      <stop offset="0.80" stop-color="#4a4a50"/>
+      <stop offset="1" stop-color="#28282d"/>
+    </linearGradient>
+    <linearGradient id="metalFront" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.55" stop-color="#d4d4d9"/>
+      <stop offset="1" stop-color="#66666d"/>
+    </linearGradient>
+    <linearGradient id="metalBack" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8e8e94"/>
+      <stop offset="0.6" stop-color="#4a4a50"/>
+      <stop offset="1" stop-color="#1c1c1f"/>
+    </linearGradient>
+    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000" flood-opacity="0.55"/></filter>
+    <filter id="inner" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.35"/></filter>
+  </defs>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#tile)"/>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#glow)"/>
+  <rect x="101.5" y="101.5" width="821" height="821" rx="183.5" fill="none" stroke="url(#rim)" stroke-width="3"/>
+
+  <!-- two accounts: the active one in front -->
+  <g filter="url(#sh)" transform="translate(0 -26)">
+    <circle cx="430" cy="439.4" r="55.2" fill="url(#metalBack)"/><path d="M328.8 575.1 A101.2 92.0 0 0 1 531.2 575.1 Q531.2 600.4 505.9 600.4 L354.1 600.4 Q328.8 600.4 328.8 575.1 Z" fill="url(#metalBack)"/>
+    <circle cx="600" cy="460.6" r="64.8" fill="url(#metalFront)" stroke="#0e0e10" stroke-width="22" stroke-linejoin="round" paint-order="stroke"/><path d="M481.2 619.9 A118.8 108.0 0 0 1 718.8 619.9 Q718.8 649.6 689.1 649.6 L510.9 649.6 Q481.2 649.6 481.2 619.9 Z" fill="url(#metalFront)" stroke="#0e0e10" stroke-width="22" stroke-linejoin="round" paint-order="stroke"/>
+  </g>
+  <g stroke="url(#metalSweep)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M228.3 451.7 A290 290 0 0 1 763.1 367.0" fill="none" stroke-width="64"/>
+    <path d="M795.7 572.3 A290 290 0 0 1 260.9 657.0" fill="none" stroke-width="64"/>
+    <path d="M704.9 414.2 L823.6 441.6 L821.4 319.8 Z" fill="url(#metalSweep)" stroke-width="30"/>
+    <path d="M319.1 609.8 L200.4 582.4 L202.6 704.2 Z" fill="url(#metalSweep)" stroke-width="30"/>
+  </g>
+</svg>
