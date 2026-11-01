@@ -520,6 +520,8 @@ func switchTo(name string, args []string) error {
 		row(t.Name(), entry.Label, "→ ["+shown+"]")
 		if u := usageFor(t, target); u.known() {
 			fmt.Printf("  %-11s limits: %s\n", "", u.short())
+		} else if t.Name() == "claude" {
+			fmt.Printf("  %-11s limits: shown once Claude Code refreshes this login (aisw status)\n", "")
 		}
 		if n := runningSessions(t); n > 0 {
 			var msg string
