@@ -22,7 +22,7 @@ between them in a second, in every terminal at once.
 </div>
 
 <p align="center">
-  <img src="assets/demo.svg" width="760" alt="aisw interactive menu: accounts grouped by tool, the active one marked">
+  <img src="assets/demo.svg" width="860" alt="aisw interactive menu: accounts grouped by tool, the active one marked">
 </p>
 
 ## Why
@@ -31,6 +31,8 @@ between them in a second, in every terminal at once.
 - **Works everywhere** — macOS, Linux, Windows. Any terminal, any editor.
 - **Safe** — saved logins live in your OS credential store (Keychain / Credential Manager), never in plain config.
 - **Team + Max on one email** — same email, different organizations? They are two separate accounts.
+- **See your limits** — every Claude Code and Codex account shows how much of its 5-hour and weekly limit is used, and when it resets.
+- **No restart needed** — open Claude Code sessions move to the new account within ~30 seconds.
 - **Undo** — every switch keeps the previous login. `aisw undo` brings it back.
 
 ## Install
@@ -181,6 +183,13 @@ session on the server, so the account you saved would stop working.
 No — only the Cursor CLI (`cursor-agent`). The editor app has its own login.
 The Antigravity desktop app *does* share its login with `agy`, so it follows
 the switch after a restart.
+
+**Where do the usage limits come from?**
+Claude Code: the same endpoint Claude Code's `/usage` screen uses, called with
+that account's saved login (skipped if the login has expired — `aisw` never
+refreshes a saved login). Codex: the latest limits Codex itself wrote into its
+session logs for that account, so no network request. Other tools don't expose
+their limits locally yet.
 
 **An API key environment variable is set.**
 `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `CURSOR_API_KEY` or `GH_TOKEN` / `GITHUB_TOKEN` override logins in those tools.

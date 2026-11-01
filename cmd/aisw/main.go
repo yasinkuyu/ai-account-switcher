@@ -209,8 +209,35 @@ type statusJSON struct {
 	LoggedIn bool          `json:"logged_in"`
 	Account  string        `json:"account,omitempty"`
 	Profile  string        `json:"profile,omitempty"`
+	Usage    *usageJSON    `json:"usage,omitempty"`
 	Saved    []accountJSON `json:"saved"`
 	Error    string        `json:"error,omitempty"`
+}
+
+// usageJSON: percent of the plan limit used in each window (null = unknown).
+type usageJSON struct {
+	FiveHourPercent *float64 `json:"five_hour_percent"`
+	FiveHourResets  string   `json:"five_hour_resets_at,omitempty"`
+	WeekPercent     *float64 `json:"week_percent"`
+}
+
+func toUsageJSON(u usageInfo) *usageJSON {
+	if !u.known() {
+		return nil
+	}
+	j := &usageJSON{}
+	if u.FiveHour >= 0 {
+		v := u.FiveHour
+		j.FiveHourPercent = &v
+		if u.FiveReset.After(time.Now()) {
+			j.FiveHourResets = u.FiveReset.UTC().Format(time.RFC3339)
+		}
+	}
+	if u.Week >= 0 {
+		v := u.Week
+		j.WeekPercent = &v
+	}
+	return j
 }
 
 type accountJSON struct {
@@ -231,6 +258,7 @@ func cmdStatusJSON(m *Meta) error {
 			id := t.Identify(cur)
 			st.LoggedIn, st.Account, curID = true, id.Label, id.ID
 			st.Profile = matchProfile(m, t.Name(), id.ID)
+			st.Usage = toUsageJSON(usageFor(t, cur))
 		}
 		seen := map[string]bool{}
 		for _, n := range sortedNames(m) {
@@ -276,6 +304,9 @@ func cmdStatus(args []string) error {
 		tag := "(unsaved — aisw save <name>)"
 		if p != "" {
 			tag = "[" + p + "]"
+		}
+		if u := usageFor(t, snap); u.known() {
+			tag += "  " + u.short()
 		}
 		row(t.Name(), id.Label, tag)
 	}
@@ -472,6 +503,9 @@ func switchTo(name string, args []string) error {
 			}
 		}
 		row(t.Name(), entry.Label, "→ ["+shown+"]")
+		if u := usageFor(t, target); u.known() {
+			fmt.Printf("  %-11s limits: %s\n", "", u.short())
+		}
 		if n := runningSessions(t); n > 0 {
 			var msg string
 			if t.Name() == "claude" {

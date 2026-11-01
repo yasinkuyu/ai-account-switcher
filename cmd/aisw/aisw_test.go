@@ -9,6 +9,7 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+	"time"
 )
 
 // Every test runs against throwaway tool directories and a test-only
@@ -331,7 +332,7 @@ func TestAddAccountSavesNewLogin(t *testing.T) {
 		t.Fatal(err)
 	}
 	m, _ = loadMeta()
-	views, err := loadViews(m)
+	views, err := loadViews(m, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -381,5 +382,22 @@ func TestMixedClaudeLoginIsNeverSaved(t *testing.T) {
 	m := &Meta{Version: metaVersion, Profiles: map[string]map[string]ToolEntry{}}
 	if name, err := autoSave(m, claudeTool{}, mixed); err != nil || name != "" || len(m.Profiles) != 0 {
 		t.Fatalf("mixed login was auto-saved: %q %v", name, err)
+	}
+}
+
+func TestCodexUsageFromLogs(t *testing.T) {
+	future := time.Now().Add(2 * time.Hour).Unix()
+	past := time.Now().Add(-2 * time.Hour).Unix()
+	log := `{"type":"session_meta","payload":{"creator_account_id":"accU"}}
+{"timestamp":"2026-11-01T00:00:00Z","type":"event_msg","payload":{"type":"token_count","rate_limits":{"primary":{"used_percent":42,"resets_at":` + fmt.Sprint(future) + `},"secondary":{"used_percent":12,"resets_at":` + fmt.Sprint(past) + `}}}}
+`
+	writeFile(t, filepath.Join(codexHome(), "sessions", "2026", "11", "01", "rollout-x.jsonl"), log)
+	u := codexUsage(Snapshot{"auth": codexAuth("u@x.com", "plus", "accU")})
+	if u.FiveHour != 42 || u.Week != 0 {
+		t.Fatalf("got 5h=%v wk=%v (week window already reset, so 0 expected)", u.FiveHour, u.Week)
+	}
+	other := codexUsage(Snapshot{"auth": codexAuth("o@x.com", "plus", "accOther")})
+	if other.known() {
+		t.Fatal("usage of one account must not be shown for another")
 	}
 }

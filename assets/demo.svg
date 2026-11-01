@@ -1,23 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 854" width="780" height="854" role="img" aria-label="aisw: interactive account menu, switching Claude to another account and adding a Codex account">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 876" width="860" height="876" role="img" aria-label="aisw: interactive account menu, switching Claude to another account and adding a Codex account">
 <title>aisw demo</title>
 <style>
 .t { font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 14px; fill: #e6edf3; white-space: pre; }
-.b { font-weight: 700; } .d { fill: #7d8590; } .c { fill: #39c5cf; } .g { fill: #3fb950; } .p { fill: #d2a8ff; } .y { fill: #d29922; }
+.b { font-weight: 700; } .d { fill: #7d8590; } .c { fill: #39c5cf; } .g { fill: #3fb950; } .p { fill: #d2a8ff; } .y { fill: #d29922; } .r { fill: #f85149; }
 </style>
 <g transform="translate(0 0)">
-<rect x="0.5" y="0.5" width="779" height="535" rx="12" fill="#0d1117" stroke="#30363d"/>
-<path d="M0.5 40 V12.5 a12 12 0 0 1 12 -12 H767.5 a12 12 0 0 1 12 12 V40 Z" fill="#161b22"/>
-<line x1="0" y1="40" x2="780" y2="40" stroke="#30363d"/>
+<rect x="0.5" y="0.5" width="859" height="535" rx="12" fill="#0d1117" stroke="#30363d"/>
+<path d="M0.5 40 V12.5 a12 12 0 0 1 12 -12 H847.5 a12 12 0 0 1 12 12 V40 Z" fill="#161b22"/>
+<line x1="0" y1="40" x2="860" y2="40" stroke="#30363d"/>
 <circle cx="22" cy="20" r="6" fill="#ff5f57"/><circle cx="42" cy="20" r="6" fill="#febc2e"/><circle cx="62" cy="20" r="6" fill="#28c840"/>
-<text x="390" y="25" text-anchor="middle" class="t d" style="font-size:12px">aisw</text>
+<text x="430" y="25" text-anchor="middle" class="t d" style="font-size:12px">aisw</text>
 <text x="24" y="68" class="t" xml:space="preserve"><tspan class="p">$ </tspan>aisw</text>
 <text x="24" y="112" class="t" xml:space="preserve">  <tspan class="b">aisw</tspan><tspan class="d">  ·  switch AI accounts</tspan></text>
 <text x="24" y="156" class="t" xml:space="preserve"><tspan class="b">  Claude Code</tspan></text>
-<text x="24" y="178" class="t" xml:space="preserve">  <tspan class="c">❯</tspan> <tspan class="g">●</tspan> you@company.com · Team (Acme)            <tspan class="d">acme</tspan></text>
-<text x="24" y="200" class="t" xml:space="preserve">  <tspan class="c"> </tspan> ○ you@company.com · Max 5x                 <tspan class="d">max</tspan></text>
+<text x="24" y="178" class="t" xml:space="preserve">  <tspan class="c">❯</tspan> <tspan class="g">●</tspan> you@company.com · Team (Acme)            <tspan class="d">acme</tspan>        5h <tspan class="r">92%</tspan> ↻14:20 · wk 61%</text>
+<text x="24" y="200" class="t" xml:space="preserve">  <tspan class="c"> </tspan> ○ you@company.com · Max 5x                 <tspan class="d">max</tspan>         5h 8% · wk 23%</text>
 <text x="24" y="244" class="t" xml:space="preserve"><tspan class="b">  Codex</tspan></text>
-<text x="24" y="266" class="t" xml:space="preserve">  <tspan class="c"> </tspan> <tspan class="g">●</tspan> you@gmail.com · Plus                     <tspan class="d">you</tspan></text>
-<text x="24" y="288" class="t" xml:space="preserve">  <tspan class="c"> </tspan> ○ you@work.com · Team                      <tspan class="d">work</tspan></text>
+<text x="24" y="266" class="t" xml:space="preserve">  <tspan class="c"> </tspan> <tspan class="g">●</tspan> you@gmail.com · Plus                     <tspan class="d">you</tspan>         5h 0% · wk 12%</text>
+<text x="24" y="288" class="t" xml:space="preserve">  <tspan class="c"> </tspan> ○ you@work.com · Team                      <tspan class="d">work</tspan>        5h <tspan class="y">74%</tspan> ↻16:05 · wk 30%</text>
 <text x="24" y="332" class="t" xml:space="preserve"><tspan class="b">  Cursor CLI</tspan></text>
 <text x="24" y="354" class="t" xml:space="preserve">  <tspan class="c"> </tspan> <tspan class="g">●</tspan> you@gmail.com                            <tspan class="d">you</tspan></text>
 <text x="24" y="398" class="t" xml:space="preserve"><tspan class="b">  Kimi</tspan></text>
@@ -26,19 +26,20 @@
 <text x="24" y="508" class="t" xml:space="preserve"><tspan class="d">  ↑↓ move · enter switch · a add · d delete · q quit</tspan></text>
 </g>
 <g transform="translate(0 560)">
-<rect x="0.5" y="0.5" width="779" height="293" rx="12" fill="#0d1117" stroke="#30363d"/>
-<path d="M0.5 40 V12.5 a12 12 0 0 1 12 -12 H767.5 a12 12 0 0 1 12 12 V40 Z" fill="#161b22"/>
-<line x1="0" y1="40" x2="780" y2="40" stroke="#30363d"/>
+<rect x="0.5" y="0.5" width="859" height="315" rx="12" fill="#0d1117" stroke="#30363d"/>
+<path d="M0.5 40 V12.5 a12 12 0 0 1 12 -12 H847.5 a12 12 0 0 1 12 12 V40 Z" fill="#161b22"/>
+<line x1="0" y1="40" x2="860" y2="40" stroke="#30363d"/>
 <circle cx="22" cy="20" r="6" fill="#ff5f57"/><circle cx="42" cy="20" r="6" fill="#febc2e"/><circle cx="62" cy="20" r="6" fill="#28c840"/>
-<text x="390" y="25" text-anchor="middle" class="t d" style="font-size:12px">aisw — commands</text>
+<text x="430" y="25" text-anchor="middle" class="t d" style="font-size:12px">aisw — commands</text>
 <text x="24" y="68" class="t" xml:space="preserve"><tspan class="p">$ </tspan>aisw claude max</text>
 <text x="24" y="90" class="t" xml:space="preserve">  claude      you@company.com · Max 5x                   <tspan class="g">→ [max]</tspan></text>
-<text x="24" y="112" class="t" xml:space="preserve">              <tspan class="y">Open Claude Code sessions move to this account within ~30 s.</tspan></text>
-<text x="24" y="156" class="t" xml:space="preserve"><tspan class="p">$ </tspan>aisw add codex</text>
-<text x="24" y="178" class="t" xml:space="preserve">Your current Codex account is saved as [you].</text>
-<text x="24" y="200" class="t" xml:space="preserve">Log in to the new account with: codex login</text>
-<text x="24" y="222" class="t" xml:space="preserve"><tspan class="d">  … browser sign-in …</tspan></text>
-<text x="24" y="244" class="t" xml:space="preserve"><tspan class="g">✓ </tspan>Added Codex — you@work.com · Team</text>
-<text x="24" y="266" class="t" xml:space="preserve"><tspan class="d">  Switch back any time:  aisw codex you</tspan></text>
+<text x="24" y="112" class="t" xml:space="preserve"><tspan class="d">              limits: 5h 8% · wk 23%</tspan></text>
+<text x="24" y="134" class="t" xml:space="preserve"><tspan class="d">              Open Claude Code sessions move to this account within ~30 s.</tspan></text>
+<text x="24" y="178" class="t" xml:space="preserve"><tspan class="p">$ </tspan>aisw add codex</text>
+<text x="24" y="200" class="t" xml:space="preserve">Your current Codex account is saved as [you].</text>
+<text x="24" y="222" class="t" xml:space="preserve">Log in to the new account with: codex login</text>
+<text x="24" y="244" class="t" xml:space="preserve"><tspan class="d">  … browser sign-in …</tspan></text>
+<text x="24" y="266" class="t" xml:space="preserve"><tspan class="g">✓ </tspan>Added Codex — you@work.com · Team</text>
+<text x="24" y="288" class="t" xml:space="preserve"><tspan class="d">  Switch back any time:  aisw codex you</tspan></text>
 </g>
 </svg>

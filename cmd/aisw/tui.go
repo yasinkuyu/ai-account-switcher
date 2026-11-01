@@ -20,6 +20,7 @@ type account struct {
 	profile string
 	entry   ToolEntry
 	active  bool
+	usage   usageInfo
 }
 
 type toolView struct {
@@ -85,8 +86,9 @@ func autoSave(m *Meta, t Tool, cur Snapshot) (string, error) {
 	return name, saveMeta(m)
 }
 
-func loadViews(m *Meta) ([]toolView, error) {
+func loadViews(m *Meta, withUsage bool) ([]toolView, error) {
 	var views []toolView
+	var jobs []func()
 	for _, t := range tools {
 		v := toolView{tool: t, installed: findBin(t.LoginCmd()[0]) != ""}
 		cur, err := t.Capture(false)
@@ -108,11 +110,34 @@ func loadViews(m *Meta) ([]toolView, error) {
 				continue
 			}
 			seen[e.ID] = true
-			v.accounts = append(v.accounts, account{tool: t, profile: n, entry: e, active: e.ID != "" && e.ID == curID})
+			v.accounts = append(v.accounts, account{tool: t, profile: n, entry: e, active: e.ID != "" && e.ID == curID,
+				usage: usageInfo{FiveHour: -1, Week: -1}})
 		}
 		if v.installed || len(v.accounts) > 0 {
 			views = append(views, v)
 		}
+	}
+	if withUsage {
+		for vi := range views {
+			for ai := range views[vi].accounts {
+				a := &views[vi].accounts[ai]
+				if a.tool.Name() != "claude" && a.tool.Name() != "codex" {
+					continue
+				}
+				jobs = append(jobs, func() {
+					snap, err := blobGet(a.tool.Name()+"/"+a.profile, a.entry.Chunks)
+					if a.active { // the live login has the freshest token
+						if cur, cerr := a.tool.Capture(false); cerr == nil && cur != nil && !unreliable(a.tool, cur) {
+							snap, err = cur, nil
+						}
+					}
+					if err == nil {
+						a.usage = usageFor(a.tool, snap)
+					}
+				})
+			}
+		}
+		fillUsage(jobs)
 	}
 	return views, nil
 }
@@ -198,7 +223,7 @@ func cmdAdd(args []string) error {
 		}
 		enableVT()
 		stop := spinner("Loading…")
-		views, err := loadViews(m)
+		views, err := loadViews(m, false)
 		stop()
 		if err != nil {
 			return err
@@ -343,7 +368,11 @@ func render(views []toolView, items []item, sel int, status string) string {
 				if pad < 1 {
 					pad = 1
 				}
-				b.WriteString("  " + cursor + dot + " " + label + strings.Repeat(" ", pad) + dim(a.profile) + "\n")
+				line := "  " + cursor + dot + " " + label + strings.Repeat(" ", pad) + dim(a.profile)
+				if a.usage.known() {
+					line += strings.Repeat(" ", max1(12-len([]rune(a.profile)))) + a.usage.short()
+				}
+				b.WriteString(line + "\n")
 			}
 			idx++
 		}
@@ -434,7 +463,7 @@ func runMenu(m *Meta, views []toolView) (menuResult, error) {
 				return menuResult{}, err
 			}
 			os.Stdout.WriteString(render(views, items, sel, dim("Updating…")))
-			if views, err = loadViews(m); err != nil {
+			if views, err = loadViews(m, true); err != nil {
 				return menuResult{}, err
 			}
 			items = buildItems(views)
@@ -501,8 +530,8 @@ func cmdMenu() error {
 		return err
 	}
 	enableVT()
-	stop := spinner("Loading accounts…")
-	views, err := loadViews(m)
+	stop := spinner("Loading accounts and limits…")
+	views, err := loadViews(m, true)
 	stop()
 	if err != nil {
 		return err
@@ -542,7 +571,7 @@ func printViews(views []toolView) {
 			if a.active {
 				dot = "●"
 			}
-			fmt.Printf("  %s %-44s %s\n", dot, a.entry.Label, a.profile)
+			fmt.Printf("  %s %-44s %-12s %s\n", dot, a.entry.Label, a.profile, a.usage.short())
 		}
 	}
 }
@@ -569,4 +598,11 @@ func spinner(msg string) func() {
 		}
 	}()
 	return func() { close(done); <-finished }
+}
+
+func max1(n int) int {
+	if n < 1 {
+		return 1
+	}
+	return n
 }
