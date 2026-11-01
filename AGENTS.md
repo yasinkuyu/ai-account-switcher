@@ -18,8 +18,9 @@ binary using only the standard library.
   …) to change accounts. It revokes the session on the server and the saved
   account stops working. Adding an account is `aisw add <tool>`, which is
   interactive — ask the user to run it.
-- Your own session does not change account when you run `aisw`: running
-  sessions keep their login in memory. Tell the user to start a new session.
+- Claude Code picks up a switch within ~30 seconds, including your own running
+  session. For other tools a running session may keep the old account until it
+  is restarted.
 - Do not use aisw to get around a provider's usage limits by rotating
   accounts automatically. Report usage to the user and let them decide.
 - Never print, copy or log credentials. `aisw` output never contains tokens;

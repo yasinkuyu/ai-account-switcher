@@ -341,6 +341,10 @@ func cmdSave(args []string) error {
 			row(t.Name(), "not logged in — skipped", "")
 			continue
 		}
+		if unreliable(t, snap) {
+			row(t.Name(), t.Identify(snap).Label, "not saved: login and account info disagree — switch with aisw first")
+			continue
+		}
 		snaps[t.Name()] = snap
 	}
 	if len(snaps) == 0 {
@@ -428,6 +432,9 @@ func switchTo(name string, args []string) error {
 		if err != nil {
 			return fmt.Errorf("%s: %v", t.Name(), err)
 		}
+		if cur != nil && unreliable(t, cur) {
+			cur = nil // mixed login: don't save it, don't call it active — just apply the target
+		}
 		if cur != nil {
 			curID := t.Identify(cur).ID
 			// Logins refresh their tokens over time: re-save the live login
@@ -466,9 +473,12 @@ func switchTo(name string, args []string) error {
 		}
 		row(t.Name(), entry.Label, "→ ["+shown+"]")
 		if n := runningSessions(t); n > 0 {
-			msg := fmt.Sprintf("⚠ %d open %s sessions are still on the old account — restart them.", n, t.Title())
-			if n == 1 {
-				msg = fmt.Sprintf("⚠ 1 open %s session is still on the old account — restart it.", t.Title())
+			var msg string
+			if t.Name() == "claude" {
+				// measured: Claude Code re-reads its Keychain login at most every 30 s
+				msg = "Open Claude Code sessions move to this account within ~30 s (their status may still show the old name)."
+			} else {
+				msg = fmt.Sprintf("⚠ %d open %s session(s) may keep the old account until restarted.", n, t.Title())
 			}
 			fmt.Printf("  %-11s %s\n", "", msg)
 		}
@@ -481,7 +491,7 @@ func switchTo(name string, args []string) error {
 		return err
 	}
 	if switched {
-		fmt.Println("\n  New sessions use the new account; restart sessions that are already running.")
+		fmt.Println("\n  New sessions use the new account.")
 	}
 	return nil
 }

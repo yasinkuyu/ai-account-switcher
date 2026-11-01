@@ -207,6 +207,18 @@ func (claudeTool) Identify(s Snapshot) Identity {
 	return Identity{ID: id, Label: label}
 }
 
+// unreliable reports a captured login whose parts disagree — for Claude, an
+// open session wrote its own account info back after a switch. Such a
+// snapshot must never be saved or treated as "already active".
+func unreliable(t Tool, s Snapshot) bool {
+	if t.Name() != "claude" || s == nil {
+		return false
+	}
+	var oa map[string]interface{}
+	_ = json.Unmarshal([]byte(s["oauthAccount"]), &oa)
+	return claudeMismatch(s, oa)
+}
+
 // claudeMismatch: the credential says one plan ("team", "max", ...) while
 // the account info says another — e.g. a still-running Claude session wrote
 // its own login back after a switch.

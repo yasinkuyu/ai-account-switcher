@@ -33,7 +33,7 @@
 <text x="390" y="25" text-anchor="middle" class="t d" style="font-size:12px">aisw — commands</text>
 <text x="24" y="68" class="t" xml:space="preserve"><tspan class="p">$ </tspan>aisw claude max</text>
 <text x="24" y="90" class="t" xml:space="preserve">  claude      you@company.com · Max 5x                   <tspan class="g">→ [max]</tspan></text>
-<text x="24" y="112" class="t" xml:space="preserve">              <tspan class="y">⚠ 1 open Claude Code session is still on the old account — restart it.</tspan></text>
+<text x="24" y="112" class="t" xml:space="preserve">              <tspan class="y">Open Claude Code sessions move to this account within ~30 s.</tspan></text>
 <text x="24" y="156" class="t" xml:space="preserve"><tspan class="p">$ </tspan>aisw add codex</text>
 <text x="24" y="178" class="t" xml:space="preserve">Your current Codex account is saved as [you].</text>
 <text x="24" y="200" class="t" xml:space="preserve">Log in to the new account with: codex login</text>

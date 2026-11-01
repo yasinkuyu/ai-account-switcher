@@ -66,7 +66,7 @@ func autoName(m *Meta, t Tool, s Snapshot) string {
 // autoSave stores the current login of t if it is not saved yet and returns
 // the profile holding it ("" when not logged in).
 func autoSave(m *Meta, t Tool, cur Snapshot) (string, error) {
-	if cur == nil {
+	if cur == nil || unreliable(t, cur) {
 		return "", nil
 	}
 	id := t.Identify(cur)

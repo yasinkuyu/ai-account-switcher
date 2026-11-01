@@ -163,11 +163,12 @@ Same idea: `aisw add codex` once, then `aisw codex <name>` to switch. Your
 
 
 **Do I have to close my open sessions?**
-New sessions use the new account right away. Sessions that are already open keep
-the old one — and when they refresh their login (every few hours) they can write
-it back, quietly switching you back. Restart open sessions after switching;
-`aisw` tells you how many are open and marks a login that was written back
-with `⚠ login mismatch`.
+Not for Claude Code: an open session re-reads its login at most every 30 seconds,
+so it continues on the new account without a restart (measured with the usage
+API in both directions). Its status line may still show the old account name for
+a while; `aisw` marks that with `⚠ login mismatch` and never saves such a mixed
+login. For the other tools this is not verified yet — restart open sessions if
+they keep using the old account.
 
 **I have a Team seat and a Max plan on the same email. Will they clash?**
 No. Claude accounts are identified by user *and* organization, so they show up as two accounts.

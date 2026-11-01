@@ -369,3 +369,17 @@ func TestToolNameErrorsAreHelpful(t *testing.T) {
 		t.Fatal("the internal undo slot must not be addressable by name")
 	}
 }
+
+func TestMixedClaudeLoginIsNeverSaved(t *testing.T) {
+	mixed := claudeSnap("claude_team", "org-team", "Acme", "", "max")
+	if !unreliable(claudeTool{}, mixed) {
+		t.Fatal("a Team label with a Max credential must be unreliable")
+	}
+	if unreliable(claudeTool{}, claudeSnap("claude_team", "org-team", "Acme", "", "team")) {
+		t.Fatal("a consistent login must be reliable")
+	}
+	m := &Meta{Version: metaVersion, Profiles: map[string]map[string]ToolEntry{}}
+	if name, err := autoSave(m, claudeTool{}, mixed); err != nil || name != "" || len(m.Profiles) != 0 {
+		t.Fatalf("mixed login was auto-saved: %q %v", name, err)
+	}
+}
