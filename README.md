@@ -33,6 +33,7 @@ between them in a second, in every terminal at once.
 - **Team + Max on one email** — same email, different organizations? They are two separate accounts.
 - **See your limits** — every Claude Code and Codex account shows how much of its 5-hour and weekly limit is used, and when it resets.
 - **No restart needed** — open Claude Code sessions move to the new account within ~30 seconds.
+- **What each project cost** — tokens and API-equivalent cost per project, per tool and in total, across every AI CLI you used on it.
 - **Undo** — every switch keeps the previous login. `aisw undo` brings it back.
 
 ## Install
@@ -91,10 +92,33 @@ For scripts and power users — everything is also in the menu.
 | `aisw list` | List saved accounts |
 | `aisw save [name] [tool]` | Save the current logins under a name of your choice |
 | `aisw rm <name> [tool]` | Delete a saved account |
+| `aisw cost [project]` | AI cost and tokens per project and tool (see below) |
 | `aisw prompt` | One-line status for your shell prompt |
 | `aisw doctor` | Show where each tool keeps its login on this machine |
 
 Tools: `claude` `codex` `cursor` `copilot` `opencode` `antigravity` `kimi`
+
+## AI cost per project
+
+Several agents on one project? `aisw cost` adds up what each of them used — per project, per tool, and in total:
+
+<p align="center">
+  <img src="assets/cost.svg" width="900" alt="aisw cost: a table of projects by tool with totals, and one project broken down by tool and model">
+</p>
+
+| Command | Shows |
+|---|---|
+| `aisw cost` | every project × every tool, with totals per tool and overall |
+| `aisw cost <project>` / `aisw cost .` | one project by tool and model, with input / output / cache tokens |
+| `aisw cost --tokens` | the same tables in tokens instead of dollars |
+| `aisw cost --since 30d` | only recent usage (`12h`, `4w`, `3m` or a date like `2026-10-01`) |
+| `aisw cost --json` | machine-readable, for scripts and agents |
+
+- **Costs are API-equivalent:** what the same tokens cost at list API prices. On a subscription you pay your plan, not this — it shows what the work is worth.
+- **Projects are git repositories:** every worktree and sub-folder of a repo counts as one project.
+- **History is kept by aisw:** the CLIs delete old logs (Claude Code after 30 days) and worktrees disappear, so every `aisw` command copies new usage records into `~/.aisw/ledger.jsonl.gz` (no prompts, no code, no credentials — only tool, project, model, time and token counts).
+- **Prices:** Anthropic models are built in. For other models add dollars per million tokens to `~/.aisw/prices.json`, e.g. `{"gpt-6": {"input": 1.25, "output": 10, "cache_read": 0.125}}`; until then their usage shows as tokens. OpenCode reports its own cost; GitHub Copilot reports AI units.
+- **Covered:** Claude Code, Codex, GitHub Copilot CLI and OpenCode (the last two need `sqlite3`, preinstalled on macOS and most Linux). Cursor, Antigravity and Kimi keep no token counts locally.
 
 ## How it works
 
@@ -174,6 +198,11 @@ they keep using the old account.
 
 **I have a Team seat and a Max plan on the same email. Will they clash?**
 No. Claude accounts are identified by user *and* organization, so they show up as two accounts.
+
+**I wipe my AI CLIs and their data every few months. Is my cost history lost?**
+No — that is what the ledger is for. It lives in `~/.aisw` (about 2 MB for tens of
+thousands of requests, gzip-compressed), apart from the CLIs' own folders. Keep
+`~/.aisw` when you clean up, or copy it somewhere safe.
 
 **Should I use `/logout`, `codex logout`, … to change accounts?**
 No — press **a** in `aisw` (or run `aisw add`). A tool's logout revokes that

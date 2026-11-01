@@ -258,7 +258,7 @@ const (
 	screenLeave = "\x1b[?25h\x1b[?1049l"
 )
 
-var useColor = os.Getenv("NO_COLOR") == ""
+var useColor = os.Getenv("NO_COLOR") == "" && isTerminal(os.Stdout)
 
 func paint(code, s string) string {
 	if !useColor {

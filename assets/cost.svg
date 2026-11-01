@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 744" width="900" height="744" role="img" aria-label="aisw cost: AI cost per project and tool, and one project broken down by tool and model">
+<title>aisw cost demo</title>
+<style>
+.t { font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 14px; fill: #e6edf3; white-space: pre; }
+.b { font-weight: 700; } .d { fill: #7d8590; } .c { fill: #39c5cf; } .g { fill: #3fb950; } .p { fill: #d2a8ff; } .y { fill: #d29922; } .r { fill: #f85149; }
+</style>
+<g transform="translate(0 0)">
+<rect x="0.5" y="0.5" width="899" height="293" rx="12" fill="#0d1117" stroke="#30363d"/>
+<path d="M0.5 40 V12.5 a12 12 0 0 1 12 -12 H887.5 a12 12 0 0 1 12 12 V40 Z" fill="#161b22"/>
+<line x1="0" y1="40" x2="900" y2="40" stroke="#30363d"/>
+<circle cx="22" cy="20" r="6" fill="#ff5f57"/><circle cx="42" cy="20" r="6" fill="#febc2e"/><circle cx="62" cy="20" r="6" fill="#28c840"/>
+<text x="450" y="25" text-anchor="middle" class="t d" style="font-size:12px">aisw cost</text>
+<text x="24" y="68" class="t" xml:space="preserve"><tspan class="p">$ </tspan>aisw cost</text>
+<text x="24" y="112" class="t" xml:space="preserve"><tspan class="b">  Project               </tspan><tspan class="b">  Claude Code</tspan><tspan class="b">      Codex</tspan><tspan class="b">    Copilot</tspan><tspan class="b">       Total</tspan></text>
+<text x="24" y="134" class="t" xml:space="preserve">  shop-backend              $1,204.50     $38.10      $4.20   $1,246.80</text>
+<text x="24" y="156" class="t" xml:space="preserve">  mobile-app                  $312.75          —      $1.10     $313.85</text>
+<text x="24" y="178" class="t" xml:space="preserve">  landing-page                 $18.40      $2.05          —      $20.45</text>
+<text x="24" y="200" class="t" xml:space="preserve"><tspan class="d">  ─────────────────────────────────────────────────────────────────────</tspan></text>
+<text x="24" y="222" class="t" xml:space="preserve"><tspan class="b">  All projects          </tspan><tspan class="b">    $1,535.65</tspan><tspan class="b">     $40.15</tspan><tspan class="b">      $5.30</tspan><tspan class="b">   $1,581.10</tspan></text>
+<text x="24" y="266" class="t" xml:space="preserve"><tspan class="d">  API-equivalent cost at list prices. Tokens: --tokens · one project: aisw cost &lt;name&gt;</tspan></text>
+</g>
+<g transform="translate(0 318)">
+<rect x="0.5" y="0.5" width="899" height="425" rx="12" fill="#0d1117" stroke="#30363d"/>
+<path d="M0.5 40 V12.5 a12 12 0 0 1 12 -12 H887.5 a12 12 0 0 1 12 12 V40 Z" fill="#161b22"/>
+<line x1="0" y1="40" x2="900" y2="40" stroke="#30363d"/>
+<circle cx="22" cy="20" r="6" fill="#ff5f57"/><circle cx="42" cy="20" r="6" fill="#febc2e"/><circle cx="62" cy="20" r="6" fill="#28c840"/>
+<text x="450" y="25" text-anchor="middle" class="t d" style="font-size:12px">aisw cost &lt;project&gt;</text>
+<text x="24" y="68" class="t" xml:space="preserve"><tspan class="p">$ </tspan>aisw cost shop-backend</text>
+<text x="24" y="112" class="t" xml:space="preserve"><tspan class="b">  shop-backend</tspan><tspan class="d">  —  AI cost by tool and model (API-equivalent)</tspan></text>
+<text x="24" y="156" class="t" xml:space="preserve"><tspan class="b">  Claude Code                                                                            $1,204.50</tspan></text>
+<text x="24" y="178" class="t" xml:space="preserve">    claude-opus-5-5         2140 req      2.4B tok  <tspan class="d">in 1M    out 6M    cache 2.3B/45M</tspan>    $1,121.30</text>
+<text x="24" y="200" class="t" xml:space="preserve">    claude-sonnet-5-5        610 req    310.0M tok  <tspan class="d">in 2M    out 1M    cache 290M/17M</tspan>       $83.20</text>
+<text x="24" y="244" class="t" xml:space="preserve"><tspan class="b">  Codex                                                                                     $38.10</tspan></text>
+<text x="24" y="266" class="t" xml:space="preserve">    gpt-6.1                   36 ses     41.0M tok  <tspan class="d">in 9M    out 2M    cache 30M/0  </tspan>        $38.10</text>
+<text x="24" y="310" class="t" xml:space="preserve"><tspan class="b">  Copilot                                                                                    $4.20</tspan></text>
+<text x="24" y="332" class="t" xml:space="preserve">    gpt-5.6                   88 req      3.1M tok  <tspan class="d">in 1M    out 120K  cache 2M/0   </tspan>         $4.20</text>
+<text x="24" y="376" class="t" xml:space="preserve"><tspan class="d">  ────────────────────────────────────────────────────────────────────────────────────────────────</tspan></text>
+<text x="24" y="398" class="t" xml:space="preserve"><tspan class="b">  Total                                                                                  $1,246.80</tspan></text>
+</g>
+</svg>

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -28,7 +29,11 @@ func TestMain(m *testing.M) {
 	os.Setenv("XDG_DATA_HOME", filepath.Join(home, ".local", "share"))
 	os.Setenv("XDG_CONFIG_HOME", filepath.Join(home, ".config"))
 	os.Setenv("KIMI_SHARE_DIR", filepath.Join(home, ".kimi"))
+	os.Setenv("CLAUDE_CONFIG_DIR", filepath.Join(home, ".claude"))
 	os.Setenv("AISW_HOME", filepath.Join(home, ".aisw"))
+	os.Setenv("AISW_NO_HISTORY", "1")
+	os.Setenv("AISW_OFFLINE", "1")   // no models.dev download in tests
+	os.Setenv("AISW_NO_IMPORT", "1") // never read super.engineering's real database
 	ownService = fmt.Sprintf("aisw-test-%d", os.Getpid())
 	// Only tools whose login lives in files under HOME take part in
 	// end-to-end tests; the others read real OS keychain entries.
@@ -453,3 +458,158 @@ func TestUsageJSONOmitsPastReset(t *testing.T) {
 type roundTrip func(*http.Request) (*http.Response, error)
 
 func (f roundTrip) RoundTrip(r *http.Request) (*http.Response, error) { return f(r) }
+
+// ------------------------------------------------------------------ cost --
+
+func TestProjectNames(t *testing.T) {
+	root := t.TempDir()
+	repo := filepath.Join(root, "Shop")
+	os.MkdirAll(filepath.Join(repo, ".git"), 0o755)
+	os.MkdirAll(filepath.Join(repo, "apps", "web", "src"), 0o755)
+	wt := filepath.Join(root, "elsewhere", "feature-x")
+	writeFile(t, filepath.Join(wt, ".git"), "gitdir: "+filepath.Join(repo, ".git", "worktrees", "feature-x")+"\n")
+	os.MkdirAll(filepath.Join(root, "site", "public_html"), 0o755)
+	plain := filepath.Join(root, "Plain")
+	os.MkdirAll(filepath.Join(plain, "backend", "src"), 0o755)
+	inner := filepath.Join(root, "Pill", "app")
+	os.MkdirAll(filepath.Join(inner, ".git"), 0o755)
+	cases := map[string]string{
+		filepath.Join(repo, "apps", "web", "src"): "Shop", // inside a repo
+		wt: "Shop", // git worktree of that repo
+		filepath.Join(repo, ".claude", "worktrees", "vite", "apps", "x"):                                        "Shop",  // deleted Claude Code worktree
+		filepath.Join(plain, "backend", "src"):                                                                  "Plain", // no git: generic names skipped
+		filepath.Join(root, "Gone", "src", "engine"):                                                            "Gone",  // deleted folder
+		filepath.Join(inner, "ios"):                                                                             "Pill",  // repo root with a generic name
+		"/x/.super.engineering/worktrees/Shop/sc-cool-7d4a/apps/a":                                              "Shop",
+		filepath.Join(root, "site", "public_html"):                                                              "site",
+		"/private/tmp/claude-501/" + strings.ReplaceAll(filepath.ToSlash(repo), "/", "-") + "/abc/scratchpad/x": "Shop",
+		"/tmp": "(temporary)",
+	}
+	for dir, want := range cases {
+		projectCache = map[string]string{}
+		if got := projectOf(dir); got != want {
+			t.Errorf("projectOf(%s) = %q, want %q", dir, got, want)
+		}
+	}
+}
+
+func TestCostOfUsesPricesAndCacheRates(t *testing.T) {
+	p := loadPrices()
+	r := usageRec{Model: "claude-opus-5-5", In: 1e6, Out: 1e6, CRead: 1e6, CWrite: 1e6, CWrite1: 1e6}
+	got, ok := costOf(r, p)
+	want := 4 + 20 + 0.20 + 4*1.25 + 4*2.0
+	if !ok || fmt.Sprintf("%.4f", got) != fmt.Sprintf("%.4f", want) {
+		t.Fatalf("got %v %v, want %v", got, ok, want)
+	}
+	if _, ok := costOf(usageRec{Model: "gpt-unknown", In: 5}, p); ok {
+		t.Fatal("an unknown model must not get a price")
+	}
+	if c, ok := costOf(usageRec{Model: "anything", HasUSD: true, USD: 1.5}, p); !ok || c != 1.5 {
+		t.Fatal("a cost reported by the tool itself must be used as is")
+	}
+	writeFile(t, pricesPath(), `{"gpt-6": {"input": 1, "output": 8}}`)
+	defer os.Remove(pricesPath())
+	if c, ok := costOf(usageRec{Model: "gpt-6.1-sol", In: 1e6, CRead: 1e6, Out: 1e6}, loadPrices()); !ok || fmt.Sprintf("%.2f", c) != "9.10" {
+		t.Fatalf("user price: got %v %v (want 9.10: cache reads default to 0.1x input)", c, ok)
+	}
+}
+
+func claudeLogLine(req, cwd string, in, out int64) string {
+	return fmt.Sprintf(`{"requestId":%q,"cwd":%q,"timestamp":"2026-10-20T10:00:00Z","message":{"id":"m-%s","model":"claude-opus-5-5","usage":{"input_tokens":%d,"output_tokens":%d,"cache_read_input_tokens":0,"cache_creation_input_tokens":0}}}`,
+		req, cwd, req, in, out)
+}
+
+func TestLedgerKeepsHistoryWhenLogsAreDeleted(t *testing.T) {
+	resetState(t)
+	os.Remove(ledgerPath())
+	os.Remove(oldLedgerPath())
+	os.Remove(ingestPath())
+	repo := filepath.Join(t.TempDir(), "Billing")
+	os.MkdirAll(filepath.Join(repo, ".git"), 0o755)
+	log := filepath.Join(claudeDir(), "projects", "p1", "s.jsonl")
+	// the same request appears twice (streamed chunks) and must count once
+	writeFile(t, log, claudeLogLine("r1", repo, 100, 10)+"\n"+claudeLogLine("r1", repo, 100, 10)+"\n"+claudeLogLine("r2", repo, 50, 5)+"\n")
+	l, _, err := ingest()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if n := countTool(l, "claude"); n != 2 {
+		t.Fatalf("want 2 requests, got %d", n)
+	}
+	// the tool cleans up its logs and the project folder is deleted
+	os.Remove(log)
+	os.RemoveAll(repo)
+	projectCache = map[string]string{}
+	l, _, err = ingest()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if n := countTool(l, "claude"); n != 2 {
+		t.Fatalf("history lost after the logs were deleted: %d records", n)
+	}
+	for _, r := range l.recs {
+		if r.Tool == "claude" && r.Project != "Billing" {
+			t.Fatalf("project changed after the folder was deleted: %q", r.Project)
+		}
+	}
+}
+
+func countTool(l *ledger, tool string) int {
+	n := 0
+	for _, r := range l.recs {
+		if r.Tool == tool {
+			n++
+		}
+	}
+	return n
+}
+
+func TestCodexSessionCountsUncachedInput(t *testing.T) {
+	l := &ledger{recs: map[string]usageRec{}}
+	f := filepath.Join(t.TempDir(), "rollout.jsonl")
+	writeFile(t, f, `{"type":"session_meta","payload":{"id":"s1","cwd":"/tmp/Proj","timestamp":"2026-10-20T10:00:00Z"}}
+{"type":"turn_context","payload":{"model":"gpt-6.1-sol"}}
+{"type":"event_msg","payload":{"type":"token_count","info":{"total_token_usage":{"input_tokens":1000,"cached_input_tokens":800,"output_tokens":50}}}}
+`)
+	var buf bytes.Buffer
+	ingestCodexFile(f, l, &buf)
+	r := l.recs["codex:s1"]
+	if r.In != 200 || r.CRead != 800 || r.Out != 50 || r.Model != "gpt-6.1-sol" {
+		t.Fatalf("got %+v", r)
+	}
+}
+
+func TestLedgerIsCompressedAppendedAndMigrated(t *testing.T) {
+	os.MkdirAll(stateDir(), 0o700)
+	os.Remove(ledgerPath())
+	// an uncompressed ledger from an earlier version, with a superseded line
+	old := `{"id":"x:1","tool":"claude","project":"A","model":"m","t":1,"n":1,"in":1,"out":1}
+{"id":"x:1","tool":"claude","project":"A","model":"m","t":1,"n":1,"in":2,"out":2}
+{"id":"x:2","tool":"codex","project":"B","model":"m","t":1,"n":1,"in":3,"out":3}
+`
+	writeFile(t, oldLedgerPath(), old)
+	l, err := loadLedger()
+	if err != nil || len(l.recs) != 2 || l.recs["x:1"].In != 2 {
+		t.Fatalf("load: %v %+v", err, l)
+	}
+	var buf bytes.Buffer
+	if err := l.flush(&buf); err != nil {
+		t.Fatal(err)
+	}
+	if fileExists(oldLedgerPath()) {
+		t.Fatal("the uncompressed ledger should be gone after migration")
+	}
+	// append a record as a new gzip member and read everything back
+	l.add(usageRec{ID: "x:3", Tool: "copilot", Project: "C", Model: "m", Count: 1, In: 5}, &buf)
+	if err := l.flush(&buf); err != nil {
+		t.Fatal(err)
+	}
+	l2, err := loadLedger()
+	if err != nil || len(l2.recs) != 3 || l2.recs["x:3"].In != 5 || l2.recs["x:1"].In != 2 {
+		t.Fatalf("reload: %v, %d records", err, len(l2.recs))
+	}
+	b, _ := os.ReadFile(ledgerPath())
+	if len(b) < 2 || b[0] != 0x1f || b[1] != 0x8b {
+		t.Fatal("ledger is not gzip-compressed")
+	}
+}

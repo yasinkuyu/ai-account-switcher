@@ -38,6 +38,8 @@ binary using only the standard library.
 | `cmd/aisw/secrets*.go` | OS credential store per platform (Keychain, Credential Manager, files) |
 | `cmd/aisw/term_*.go` | raw terminal mode per platform |
 | `cmd/aisw/procs.go` | detects running sessions of a tool |
+| `cmd/aisw/usage.go` | 5-hour / weekly limits (Claude usage endpoint, Codex logs) |
+| `cmd/aisw/cost.go`, `cost_report.go` | usage ledger, project detection, prices, `aisw cost` |
 | `cmd/aisw/aisw_test.go` | tests (temp dirs and a test-only keychain service; never real logins) |
 
 Rules:

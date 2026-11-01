@@ -36,6 +36,7 @@ const usage = `aisw — switch accounts in your AI coding CLIs
   aisw list                    list saved accounts
   aisw save [name] [tool...]   save current logins under a name you choose
   aisw rm <name> [tool...]     delete a saved account
+  aisw cost [project|.]        AI cost per project and tool (--tokens, --since 30d, --json)
   aisw prompt                  one-line status for shell prompts
   aisw doctor                  where each tool keeps its login
   aisw version
@@ -632,13 +633,19 @@ func cmdDoctor(_ []string) error {
 }
 
 func run(args []string) error {
+	if len(args) == 0 || !map[string]bool{"prompt": true, "cost": true, "version": true, "--version": true,
+		"-v": true, "help": true, "--help": true, "-h": true}[args[0]] {
+		if os.Getenv("AISW_NO_HISTORY") == "" {
+			maybeIngest()
+		}
+	}
 	if len(args) == 0 {
 		return cmdMenu()
 	}
 	cmds := map[string]func([]string) error{
 		"status": cmdStatus, "st": cmdStatus, "save": cmdSave, "use": cmdUse, "switch": cmdUse,
 		"undo": cmdUndo, "add": cmdAdd, "list": cmdList, "ls": cmdList, "rm": cmdRm, "prompt": cmdPrompt,
-		"doctor": cmdDoctor,
+		"doctor": cmdDoctor, "cost": cmdCost,
 	}
 	switch args[0] {
 	case "-h", "--help", "help":
