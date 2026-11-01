@@ -4,6 +4,8 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -401,3 +403,53 @@ func TestCodexUsageFromLogs(t *testing.T) {
 		t.Fatal("usage of one account must not be shown for another")
 	}
 }
+
+func TestClaudeUsageSkipsExpiredLogin(t *testing.T) {
+	old := usageClient
+	defer func() { usageClient = old }()
+	called := false
+	usageClient = &http.Client{Transport: roundTrip(func(*http.Request) (*http.Response, error) {
+		called = true
+		return nil, fmt.Errorf("no network in this test")
+	})}
+	expired := Snapshot{"keychain": fmt.Sprintf(`{"claudeAiOauth":{"accessToken":"tok","expiresAt":%d}}`,
+		time.Now().Add(-time.Hour).UnixMilli())}
+	if u := claudeUsage(expired); u.known() || called {
+		t.Fatalf("an expired login must not be used (called=%v, %+v)", called, u)
+	}
+}
+
+func TestClaudeUsageParsesResponse(t *testing.T) {
+	old := usageClient
+	defer func() { usageClient = old }()
+	usageClient = &http.Client{Transport: roundTrip(func(r *http.Request) (*http.Response, error) {
+		if r.Header.Get("Authorization") != "Bearer tok" {
+			t.Errorf("missing bearer token")
+		}
+		body := `{"five_hour":{"utilization":31.0,"resets_at":"2099-01-01T10:00:00+00:00"},"seven_day":{"utilization":12.0}}`
+		return &http.Response{StatusCode: 200, Body: io.NopCloser(strings.NewReader(body)), Header: http.Header{}}, nil
+	})}
+	valid := Snapshot{"keychain": fmt.Sprintf(`{"claudeAiOauth":{"accessToken":"tok","expiresAt":%d}}`,
+		time.Now().Add(time.Hour).UnixMilli())}
+	u := claudeUsage(valid)
+	if u.FiveHour != 31 || u.Week != 12 || u.FiveReset.Year() != 2099 {
+		t.Fatalf("got %+v", u)
+	}
+	if s := u.short(); !strings.Contains(s, "5h 31%") || !strings.Contains(s, "wk 12%") {
+		t.Fatalf("short: %q", s)
+	}
+}
+
+func TestUsageJSONOmitsPastReset(t *testing.T) {
+	j := toUsageJSON(usageInfo{FiveHour: 0, Week: 5, FiveReset: time.Now().Add(-time.Hour)})
+	if j == nil || j.FiveHourResets != "" || *j.WeekPercent != 5 {
+		t.Fatalf("got %+v", j)
+	}
+	if toUsageJSON(usageInfo{FiveHour: -1, Week: -1}) != nil {
+		t.Fatal("unknown usage must be omitted")
+	}
+}
+
+type roundTrip func(*http.Request) (*http.Response, error)
+
+func (f roundTrip) RoundTrip(r *http.Request) (*http.Response, error) { return f(r) }

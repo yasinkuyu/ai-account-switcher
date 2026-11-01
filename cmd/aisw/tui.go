@@ -28,6 +28,7 @@ type toolView struct {
 	accounts  []account
 	loggedIn  bool
 	installed bool
+	mixed     bool // current login is mixed (see unreliable)
 }
 
 // findBin resolves a tool's command, including well-known install paths.
@@ -98,9 +99,13 @@ func loadViews(m *Meta, withUsage bool) ([]toolView, error) {
 		curID := ""
 		if cur != nil {
 			v.loggedIn = true
-			curID = t.Identify(cur).ID
-			if _, err := autoSave(m, t, cur); err != nil {
-				return nil, fmt.Errorf("%s: %v", t.Name(), err)
+			if unreliable(t, cur) {
+				v.mixed = true // no account is marked active: label and credential disagree
+			} else {
+				curID = t.Identify(cur).ID
+				if _, err := autoSave(m, t, cur); err != nil {
+					return nil, fmt.Errorf("%s: %v", t.Name(), err)
+				}
 			}
 		}
 		seen := map[string]bool{}
@@ -342,7 +347,11 @@ func render(views []toolView, items []item, sel int, status string) string {
 	b.WriteString("\n  " + bold("aisw") + dim("  ·  switch AI accounts") + "\n")
 	idx := 0
 	for _, v := range views {
-		b.WriteString("\n  " + bold(v.tool.Title()) + "\n")
+		b.WriteString("\n  " + bold(v.tool.Title()))
+		if v.mixed {
+			b.WriteString("  " + paint("33", "⚠ mixed login — pick an account to fix it"))
+		}
+		b.WriteString("\n")
 		n := len(v.accounts)
 		if n == 0 {
 			n = 1
@@ -562,7 +571,11 @@ func cmdMenu() error {
 
 func printViews(views []toolView) {
 	for _, v := range views {
-		fmt.Println(v.tool.Title())
+		if v.mixed {
+			fmt.Println(v.tool.Title() + "  ⚠ mixed login — fix with: aisw " + v.tool.Name() + " <name>")
+		} else {
+			fmt.Println(v.tool.Title())
+		}
 		if len(v.accounts) == 0 {
 			fmt.Println("  ○ not logged in")
 		}

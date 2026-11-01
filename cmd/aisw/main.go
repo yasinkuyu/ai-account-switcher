@@ -256,9 +256,14 @@ func cmdStatusJSON(m *Meta) error {
 			st.Error = err.Error()
 		} else if cur != nil {
 			id := t.Identify(cur)
-			st.LoggedIn, st.Account, curID = true, id.Label, id.ID
-			st.Profile = matchProfile(m, t.Name(), id.ID)
-			st.Usage = toUsageJSON(usageFor(t, cur))
+			st.LoggedIn, st.Account = true, id.Label
+			if unreliable(t, cur) {
+				st.Error = "mixed login: account info and credential disagree; run aisw " + t.Name() + " <name>"
+			} else {
+				curID = id.ID
+				st.Profile = matchProfile(m, t.Name(), id.ID)
+				st.Usage = toUsageJSON(usageFor(t, cur))
+			}
 		}
 		seen := map[string]bool{}
 		for _, n := range sortedNames(m) {
@@ -300,6 +305,10 @@ func cmdStatus(args []string) error {
 			continue
 		}
 		id := t.Identify(snap)
+		if unreliable(t, snap) {
+			row(t.Name(), id.Label, "→ fix with: aisw "+t.Name()+" <name>")
+			continue
+		}
 		p := matchProfile(m, t.Name(), id.ID)
 		tag := "(unsaved — aisw save <name>)"
 		if p != "" {
@@ -363,6 +372,7 @@ func cmdSave(args []string) error {
 		return err
 	}
 	snaps := map[string]Snapshot{}
+	mixed := false
 	for _, t := range ts {
 		snap, err := t.Capture(true)
 		if err != nil {
@@ -374,11 +384,12 @@ func cmdSave(args []string) error {
 		}
 		if unreliable(t, snap) {
 			row(t.Name(), t.Identify(snap).Label, "not saved: login and account info disagree — switch with aisw first")
+			mixed = true
 			continue
 		}
 		snaps[t.Name()] = snap
 	}
-	if len(snaps) == 0 {
+	if len(snaps) == 0 && !mixed {
 		return errors.New("nothing to save — log in with one of the tools first")
 	}
 	if name == "" {
@@ -406,6 +417,9 @@ func cmdSave(args []string) error {
 	}
 	if !nameRe.MatchString(name) || name == backupName {
 		return fmt.Errorf("invalid profile name %q (letters, digits, . _ -)", name)
+	}
+	if len(snaps) == 0 {
+		return errors.New("nothing saved")
 	}
 	saved := 0
 	for _, t := range ts {
