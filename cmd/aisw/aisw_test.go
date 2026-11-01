@@ -476,14 +476,16 @@ func TestProjectNames(t *testing.T) {
 	cases := map[string]string{
 		filepath.Join(repo, "apps", "web", "src"): "Shop", // inside a repo
 		wt: "Shop", // git worktree of that repo
-		filepath.Join(repo, ".claude", "worktrees", "vite", "apps", "x"):                                        "Shop",  // deleted Claude Code worktree
-		filepath.Join(plain, "backend", "src"):                                                                  "Plain", // no git: generic names skipped
-		filepath.Join(root, "Gone", "src", "engine"):                                                            "Gone",  // deleted folder
-		filepath.Join(inner, "ios"):                                                                             "Pill",  // repo root with a generic name
-		"/x/.super.engineering/worktrees/Shop/sc-cool-7d4a/apps/a":                                              "Shop",
-		filepath.Join(root, "site", "public_html"):                                                              "site",
-		"/private/tmp/claude-501/" + strings.ReplaceAll(filepath.ToSlash(repo), "/", "-") + "/abc/scratchpad/x": "Shop",
+		filepath.Join(repo, ".claude", "worktrees", "vite", "apps", "x"): "Shop",  // deleted Claude Code worktree
+		filepath.Join(plain, "backend", "src"):                           "Plain", // no git: generic names skipped
+		filepath.Join(root, "Gone", "src", "engine"):                     "Gone",  // deleted folder
+		filepath.Join(inner, "ios"):                                      "Pill",  // repo root with a generic name
+		"/x/.super.engineering/worktrees/Shop/sc-cool-7d4a/apps/a":       "Shop",
+		filepath.Join(root, "site", "public_html"):                       "site",
 		"/tmp": "(temporary)",
+	}
+	if runtime.GOOS != "windows" { // Claude Code's /tmp/claude-<uid>/<slug>/ folders exist on macOS and Linux
+		cases["/private/tmp/claude-501/"+strings.ReplaceAll(filepath.ToSlash(repo), "/", "-")+"/abc/scratchpad/x"] = "Shop"
 	}
 	for dir, want := range cases {
 		projectCache = map[string]string{}
