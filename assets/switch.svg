@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 500" width="860" height="500" role="img" aria-label="Claude Code session: the user is working, the usage limit is reached, they run aisw claude main inside the same session, and work continues on the other account">
+<title>aisw: switch accounts when a limit is reached</title>
+<style>
+.t { font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 14px; fill: #e6edf3; white-space: pre; }
+.b { font-weight: 700; } .d { fill: #7d8590; } .g { fill: #3fb950; } .p { fill: #d2a8ff; } .y { fill: #d29922; } .r { fill: #f85149; } .o { fill: #e3864d; }
+.s { font-size: 13px; }
+.lab { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 600; }
+@keyframes a1{0%,1.11%{opacity:0}1.94%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a1{animation:a1 18.0s linear infinite}
+@keyframes a2{0%,3.06%{transform:translateX(0);animation-timing-function:steps(30,end)}14.96%,100%{transform:translateX(256.9px)}}.a2{animation:a2 18.0s linear infinite}
+@keyframes a3{0%,3.06%{opacity:0}3.89%,16.63%{opacity:1}17.46%,100%{opacity:0}}.a3{animation:a3 18.0s linear infinite}
+@keyframes a4{0%,17.74%{opacity:0}18.57%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a4{animation:a4 18.0s linear infinite}
+@keyframes a5{0%,21.63%{opacity:0}22.46%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a5{animation:a5 18.0s linear infinite}
+@keyframes a6{0%,23.29%{opacity:0}24.13%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a6{animation:a6 18.0s linear infinite}
+@keyframes a7{0%,29.40%{opacity:0}30.24%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a7{animation:a7 18.0s linear infinite}
+@keyframes a8{0%,29.40%{opacity:0}30.24%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a8{animation:a8 18.0s linear infinite}
+@keyframes a9{0%,38.29%{opacity:0}39.13%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a9{animation:a9 18.0s linear infinite}
+@keyframes a10{0%,40.24%{transform:translateX(0);animation-timing-function:steps(16,end)}46.59%,100%{transform:translateX(138.9px)}}.a10{animation:a10 18.0s linear infinite}
+@keyframes a11{0%,40.24%{opacity:0}41.07%,48.25%{opacity:1}49.09%,100%{opacity:0}}.a11{animation:a11 18.0s linear infinite}
+@keyframes a12{0%,49.37%{opacity:0}50.20%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a12{animation:a12 18.0s linear infinite}
+@keyframes a13{0%,49.37%{opacity:0}50.20%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a13{animation:a13 18.0s linear infinite}
+@keyframes a14{0%,57.14%{opacity:0}57.98%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a14{animation:a14 18.0s linear infinite}
+@keyframes a15{0%,59.09%{transform:translateX(0);animation-timing-function:steps(8,end)}62.26%,100%{transform:translateX(71.4px)}}.a15{animation:a15 18.0s linear infinite}
+@keyframes a16{0%,59.09%{opacity:0}59.92%,63.93%{opacity:1}64.76%,100%{opacity:0}}.a16{animation:a16 18.0s linear infinite}
+@keyframes a17{0%,65.04%{opacity:0}65.87%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a17{animation:a17 18.0s linear infinite}
+@keyframes a18{0%,68.93%{opacity:0}69.76%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a18{animation:a18 18.0s linear infinite}
+@keyframes a19{0%,70.60%{opacity:0}71.43%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a19{animation:a19 18.0s linear infinite}
+@keyframes a20{0%,0.00%{opacity:0}0.83%,29.40%{opacity:1}30.24%,100%{opacity:0}}.a20{animation:a20 18.0s linear infinite}
+@keyframes a21{0%,29.40%{opacity:0}30.24%,49.37%{opacity:1}50.20%,100%{opacity:0}}.a21{animation:a21 18.0s linear infinite}
+@keyframes a22{0%,49.37%{opacity:0}50.20%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a22{animation:a22 18.0s linear infinite}
+@keyframes a23{0%,0.00%{opacity:0}0.83%,29.40%{opacity:1}30.24%,100%{opacity:0}}.a23{animation:a23 18.0s linear infinite}
+@keyframes a24{0%,29.40%{opacity:0}30.24%,49.37%{opacity:1}50.20%,100%{opacity:0}}.a24{animation:a24 18.0s linear infinite}
+@keyframes a25{0%,49.37%{opacity:0}50.20%,71.15%{opacity:1}71.98%,100%{opacity:0}}.a25{animation:a25 18.0s linear infinite}
+@keyframes a26{0%,71.15%{opacity:0}71.98%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a26{animation:a26 18.0s linear infinite}
+</style>
+<rect x="0.5" y="0.5" width="859" height="499" rx="12" fill="#0d1117" stroke="#30363d"/>
+<path d="M0.5 40 V12.5 a12 12 0 0 1 12 -12 H847.5 a12 12 0 0 1 12 12 V40 Z" fill="#161b22"/>
+<line x1="0" y1="40" x2="860" y2="40" stroke="#30363d"/>
+<circle cx="22" cy="20" r="6" fill="#ff5f57"/><circle cx="42" cy="20" r="6" fill="#febc2e"/><circle cx="62" cy="20" r="6" fill="#28c840"/>
+<text x="86" y="25" class="t d" style="font-size:12px">claude — ~/projects/aisw</text>
+<line x1="0" y1="452" x2="860" y2="452" stroke="#30363d"/>
+<text x="24" y="72" class="t a1" xml:space="preserve"><tspan class="d">&gt; </tspan>add a --json flag to aisw cost</text>
+<rect x="40.9" y="57" width="266.9" height="20" fill="#0d1117" class="a2"/>
+<g class="a3"><rect x="40.9" y="59" width="8" height="17" fill="#e6edf3" class="a2"/></g>
+<text x="24" y="106" class="t a4" xml:space="preserve"><tspan class="o">●</tspan> I'll add the flag, then a test for it.</text>
+<text x="24" y="140" class="t a5" xml:space="preserve"><tspan class="g">●</tspan> <tspan class="b">Update</tspan>(cmd/aisw/cost_report.go)</text>
+<text x="24" y="162" class="t a6" xml:space="preserve"><tspan class="d">  ⎿  Updated with 18 additions and 2 removals</tspan></text>
+<text x="24" y="196" class="t a7" xml:space="preserve"><tspan class="r">●</tspan> <tspan class="b">Usage limit reached</tspan> <tspan class="d">· continuing automatically at 4:50pm · esc to cancel</tspan></text>
+<text x="24" y="218" class="t a8" xml:space="preserve"><tspan class="d">  ⎿  </tspan><tspan class="r">5-hour limit used: 100% · resets 4:50pm</tspan></text>
+<text x="24" y="252" class="t a9" xml:space="preserve"><tspan class="p">! </tspan>aisw claude main</text>
+<rect x="40.9" y="237" width="148.9" height="20" fill="#0d1117" class="a10"/>
+<g class="a11"><rect x="40.9" y="239" width="8" height="17" fill="#e6edf3" class="a10"/></g>
+<text x="24" y="274" class="t a12" xml:space="preserve"><tspan class="d">  ⎿  </tspan>claude  you@gmail.com · Max 5x  <tspan class="g">→ [main]</tspan></text>
+<text x="24" y="296" class="t a13" xml:space="preserve"><tspan class="d">     limits: 5h </tspan><tspan class="g">8%</tspan><tspan class="d"> · wk 23%</tspan></text>
+<text x="24" y="330" class="t a14" xml:space="preserve"><tspan class="d">&gt; </tspan>continue</text>
+<rect x="40.9" y="315" width="81.4" height="20" fill="#0d1117" class="a15"/>
+<g class="a16"><rect x="40.9" y="317" width="8" height="17" fill="#e6edf3" class="a15"/></g>
+<text x="24" y="364" class="t a17" xml:space="preserve"><tspan class="o">●</tspan> Picking up where we left off: the test for --json.</text>
+<text x="24" y="398" class="t a18" xml:space="preserve"><tspan class="g">●</tspan> <tspan class="b">Update</tspan>(cmd/aisw/aisw_test.go)</text>
+<text x="24" y="420" class="t a19" xml:space="preserve"><tspan class="d">  ⎿  Updated with 24 additions</tspan></text>
+<text x="24" y="478" class="t s a20" xml:space="preserve"><tspan class="d">account </tspan>work<tspan class="d"> · you@company.com · Team   5h </tspan><tspan class="y">94%</tspan></text>
+<text x="24" y="478" class="t s a21" xml:space="preserve"><tspan class="d">account </tspan>work<tspan class="d"> · you@company.com · Team   5h </tspan><tspan class="r">100% · limit reached</tspan></text>
+<text x="24" y="478" class="t s a22" xml:space="preserve"><tspan class="d">account </tspan><tspan class="g">main</tspan><tspan class="d"> · you@gmail.com · Max 5x    5h </tspan><tspan class="g">8%</tspan></text>
+<g class="a23"><rect x="773" y="9" width="71" height="22" rx="11" fill="#7d8590" fill-opacity="0.18" stroke="#7d8590" stroke-opacity="0.5"/><text x="808.5" y="24" text-anchor="middle" class="lab" fill="#7d8590">working</text></g>
+<g class="a24"><rect x="731" y="9" width="113" height="22" rx="11" fill="#f85149" fill-opacity="0.18" stroke="#f85149" stroke-opacity="0.5"/><text x="787.5" y="24" text-anchor="middle" class="lab" fill="#f85149">limit reached</text></g>
+<g class="a25"><rect x="696" y="9" width="148" height="22" rx="11" fill="#39c5cf" fill-opacity="0.18" stroke="#39c5cf" stroke-opacity="0.5"/><text x="770.0" y="24" text-anchor="middle" class="lab" fill="#39c5cf">switched with aisw</text></g>
+<g class="a26"><rect x="640" y="9" width="204" height="22" rx="11" fill="#3fb950" fill-opacity="0.18" stroke="#3fb950" stroke-opacity="0.5"/><text x="742.0" y="24" text-anchor="middle" class="lab" fill="#3fb950">same session, back to work</text></g>
+</svg>

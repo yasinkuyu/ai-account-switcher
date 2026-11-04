@@ -36,6 +36,23 @@ between them in a second, in every terminal at once.
 - **What each project cost** — tokens and API-equivalent cost per project, per tool and in total, across every AI CLI you used on it.
 - **Undo** — every switch keeps the previous login. `aisw undo` brings it back.
 
+## Hit a limit? Switch without closing the session
+
+When Claude Code says the usage limit is reached, don't close it. Right in the
+same session (the `!` prefix runs a shell command), or in any other terminal:
+
+```sh
+! aisw claude main
+```
+
+The open session moves to the `main` account within ~30 seconds — same
+conversation, same context. Type `continue` and keep working. No logout, no
+restart; `aisw claude work` (or `aisw undo`) takes you back later.
+
+<p align="center">
+  <img src="assets/switch.svg" width="860" alt="Animated: working in Claude Code, the usage limit is reached, ! aisw claude main switches to the main account, and the same session continues">
+</p>
+
 ## Install
 
 > [!WARNING]
