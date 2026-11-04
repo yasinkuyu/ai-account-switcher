@@ -6,30 +6,30 @@
 .s { font-size: 13px; }
 .lab { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 600; }
 @keyframes a1{0%,1.11%{opacity:0}1.94%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a1{animation:a1 18.0s linear infinite}
-@keyframes a2{0%,3.06%{transform:translateX(0);animation-timing-function:steps(30,end)}14.96%,100%{transform:translateX(256.9px)}}.a2{animation:a2 18.0s linear infinite}
-@keyframes a3{0%,3.06%{opacity:0}3.89%,16.63%{opacity:1}17.46%,100%{opacity:0}}.a3{animation:a3 18.0s linear infinite}
+@keyframes a2{0%,3.06%{transform:translateX(0);animation-timing-function:steps(30,end)}14.96%,100%{transform:translateX(256.9px)}}.a2{animation:a2 18.0s linear infinite;transform:translateX(256.9px)}
+@keyframes a3{0%,3.06%{opacity:0}3.89%,16.63%{opacity:1}17.46%,100%{opacity:0}}.a3{animation:a3 18.0s linear infinite;opacity:0}
 @keyframes a4{0%,17.74%{opacity:0}18.57%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a4{animation:a4 18.0s linear infinite}
 @keyframes a5{0%,21.63%{opacity:0}22.46%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a5{animation:a5 18.0s linear infinite}
 @keyframes a6{0%,23.29%{opacity:0}24.13%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a6{animation:a6 18.0s linear infinite}
 @keyframes a7{0%,29.40%{opacity:0}30.24%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a7{animation:a7 18.0s linear infinite}
 @keyframes a8{0%,29.40%{opacity:0}30.24%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a8{animation:a8 18.0s linear infinite}
 @keyframes a9{0%,38.29%{opacity:0}39.13%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a9{animation:a9 18.0s linear infinite}
-@keyframes a10{0%,40.24%{transform:translateX(0);animation-timing-function:steps(16,end)}46.59%,100%{transform:translateX(138.9px)}}.a10{animation:a10 18.0s linear infinite}
-@keyframes a11{0%,40.24%{opacity:0}41.07%,48.25%{opacity:1}49.09%,100%{opacity:0}}.a11{animation:a11 18.0s linear infinite}
+@keyframes a10{0%,40.24%{transform:translateX(0);animation-timing-function:steps(16,end)}46.59%,100%{transform:translateX(138.9px)}}.a10{animation:a10 18.0s linear infinite;transform:translateX(138.9px)}
+@keyframes a11{0%,40.24%{opacity:0}41.07%,48.25%{opacity:1}49.09%,100%{opacity:0}}.a11{animation:a11 18.0s linear infinite;opacity:0}
 @keyframes a12{0%,49.37%{opacity:0}50.20%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a12{animation:a12 18.0s linear infinite}
 @keyframes a13{0%,49.37%{opacity:0}50.20%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a13{animation:a13 18.0s linear infinite}
 @keyframes a14{0%,57.14%{opacity:0}57.98%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a14{animation:a14 18.0s linear infinite}
-@keyframes a15{0%,59.09%{transform:translateX(0);animation-timing-function:steps(8,end)}62.26%,100%{transform:translateX(71.4px)}}.a15{animation:a15 18.0s linear infinite}
-@keyframes a16{0%,59.09%{opacity:0}59.92%,63.93%{opacity:1}64.76%,100%{opacity:0}}.a16{animation:a16 18.0s linear infinite}
+@keyframes a15{0%,59.09%{transform:translateX(0);animation-timing-function:steps(8,end)}62.26%,100%{transform:translateX(71.4px)}}.a15{animation:a15 18.0s linear infinite;transform:translateX(71.4px)}
+@keyframes a16{0%,59.09%{opacity:0}59.92%,63.93%{opacity:1}64.76%,100%{opacity:0}}.a16{animation:a16 18.0s linear infinite;opacity:0}
 @keyframes a17{0%,65.04%{opacity:0}65.87%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a17{animation:a17 18.0s linear infinite}
 @keyframes a18{0%,68.93%{opacity:0}69.76%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a18{animation:a18 18.0s linear infinite}
 @keyframes a19{0%,70.60%{opacity:0}71.43%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a19{animation:a19 18.0s linear infinite}
-@keyframes a20{0%,0.00%{opacity:0}0.83%,29.40%{opacity:1}30.24%,100%{opacity:0}}.a20{animation:a20 18.0s linear infinite}
-@keyframes a21{0%,29.40%{opacity:0}30.24%,49.37%{opacity:1}50.20%,100%{opacity:0}}.a21{animation:a21 18.0s linear infinite}
+@keyframes a20{0%,0.00%{opacity:0}0.83%,29.40%{opacity:1}30.24%,100%{opacity:0}}.a20{animation:a20 18.0s linear infinite;opacity:0}
+@keyframes a21{0%,29.40%{opacity:0}30.24%,49.37%{opacity:1}50.20%,100%{opacity:0}}.a21{animation:a21 18.0s linear infinite;opacity:0}
 @keyframes a22{0%,49.37%{opacity:0}50.20%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a22{animation:a22 18.0s linear infinite}
-@keyframes a23{0%,0.00%{opacity:0}0.83%,29.40%{opacity:1}30.24%,100%{opacity:0}}.a23{animation:a23 18.0s linear infinite}
-@keyframes a24{0%,29.40%{opacity:0}30.24%,49.37%{opacity:1}50.20%,100%{opacity:0}}.a24{animation:a24 18.0s linear infinite}
-@keyframes a25{0%,49.37%{opacity:0}50.20%,71.15%{opacity:1}71.98%,100%{opacity:0}}.a25{animation:a25 18.0s linear infinite}
+@keyframes a23{0%,0.00%{opacity:0}0.83%,29.40%{opacity:1}30.24%,100%{opacity:0}}.a23{animation:a23 18.0s linear infinite;opacity:0}
+@keyframes a24{0%,29.40%{opacity:0}30.24%,49.37%{opacity:1}50.20%,100%{opacity:0}}.a24{animation:a24 18.0s linear infinite;opacity:0}
+@keyframes a25{0%,49.37%{opacity:0}50.20%,71.15%{opacity:1}71.98%,100%{opacity:0}}.a25{animation:a25 18.0s linear infinite;opacity:0}
 @keyframes a26{0%,71.15%{opacity:0}71.98%,95.56%{opacity:1}96.39%,100%{opacity:0}}.a26{animation:a26 18.0s linear infinite}
 </style>
 <rect x="0.5" y="0.5" width="859" height="499" rx="12" fill="#0d1117" stroke="#30363d"/>
